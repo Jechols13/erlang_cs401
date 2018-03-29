@@ -1,5 +1,13 @@
 -module(test).
--export([newgame/0, playwith/1, stop/0, create_empty_board/0, wait_opponent/0, connect_opponent/1, tell/1]).
+-export([
+	newgame/0,
+	playwith/1,
+	stop/0,
+	create_empty_board/0,
+	wait_opponent/0,
+	connect_opponent/1,
+	tell/1
+]).
 % -export([update_board/3, create_empty_board/0, check/1]).
 
 wait_msg(YourSym, TheirSym, Board, OpponentPID, Turn) ->
@@ -43,7 +51,7 @@ wait_opponent() ->
 						%the other player starts
 			PlayerY_PID ! {message, 'You will start first.~n'}, Turn = PlayerY_PID
 		end,
-		wait_msg(x, o, Board, PlayerY_PID, Turn)
+			wait_msg(x, o, Board, PlayerY_PID, Turn)
 			
 	end.
 		
@@ -65,7 +73,7 @@ tell(Message) ->
 	
 						%starts a new game node and waits for an opponent
 newgame() ->
-	register(player, spawn(test, connect_opponent, [])).
+	register(player, spawn(test, wait_opponent, [])).
 	
 						%connects to another Erlang node identified by Opponent and starts a new game.
 playwith(XNode) ->
