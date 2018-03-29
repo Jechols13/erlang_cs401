@@ -24,7 +24,7 @@ draw_board(Board) ->
 % coordinate is in form of a1, a2, a3, b1, b2, b3, c1, c2, c3
 % when winning position is reached or no move can be made
 place_token(Board, MySymbol) ->
-	io:format("Board coordinates:~n~na1 a2 a3~nb1 b2 b3~nc1 c2 c3~n"),
+	io:format("Board coordinates:~n~na1 a2 a3~nb1 b2 b3~nc1 c2 c3~n~n"),
 	draw_board(Board),
 	{ok, [PosStr|_]} = io:fread("Postion: ", "~s"),
 	PosAtm = list_to_atom(PosStr),
