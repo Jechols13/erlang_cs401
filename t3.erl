@@ -24,7 +24,7 @@ draw_board(Board) ->
 % coordinate is in form of a1, a2, a3, b1, b2, b3, c1, c2, c3
 % when winning position is reached or no move can be made
 place_token(Board, MySymbol) ->
-	io:format("Board coordinates:~n~na1 a2 a3~nb1 b2 b3~nc1 c2 c3~n~n"),
+	io:format("Board coordinates:~na1 a2 a3~nb1 b2 b3~nc1 c2 c3~n~n"),
 	draw_board(Board),
 	{ok, [PosStr|_]} = io:fread("Postion: ", "~s"),
 	PosAtm = list_to_atom(PosStr),
@@ -89,16 +89,16 @@ msg_center(OponentPID, MySymbol) ->
 		
 		%% game is still on, opponent sends new board and their latest position
 		{continue, Board, Position} ->
-			io:format("Your opponent has placed their latest token at: ~w", [Position]),
+			io:format("---------------------~nYour opponent has placed their latest token at: ~w~n", [Position]),
 			{New_Board, New_Position} = place_token(Board, MySymbol),
 			case check_winner(New_Board) of
 				win ->
 					io:format("You win!~n"),
-					OponentPID ! {stop, lose};
+					OponentPID ! {stop, lose, New_Board};
 			   %lose ->  this is not possible, losses are communicated via msg_center
 				tie ->
 					io:format("Tie!~n"),
-					OponentPID ! {stop, tie};
+					OponentPID ! {stop, tie, New_Board};
 				continue ->
 					OponentPID ! {continue, New_Board, New_Position},
 					msg_center(OponentPID, MySymbol)
@@ -106,13 +106,17 @@ msg_center(OponentPID, MySymbol) ->
 		%% -----------------------------------------
 
 		%% game is over, opponent says we tied
-		{stop, tie} ->
-			io:format("Tie!~nGame Over.~n");
+		{stop, tie, Board} ->
+			io:format("Tie!~n"),
+			display_board(Board),
+			io:format("Game Over.~n");
 		%% -----------------------------------------
 
 		%% game is over, opponent says we lost
-		{stop, lose} ->
-			io:format("You lose!~nGame Over.~n")
+		{stop, lose, Board} ->
+			io:format("You lose!~n"),
+			display_board(Board),
+			io:format("Game Over.~n")
 		%% -----------------------------------------
 	end.
 
