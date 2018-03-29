@@ -6,11 +6,8 @@
 
 new_game() ->
     io:format("Welcome! Let's play some Tic Tac Toe!~n"),
-    io:format("Please enter name."),
-    io:format("If you use spaces or capital letters, tell partner to surround your name with single quotes.)~n"),
-    {ok, [Name]} = io:fread("Name: ", "~s"),
-    register(list_to_atom(Name), self()),
-    io:format("Welcome, ~w~nWaiting on opponent...~n", [Name]),
+    io:format("Tell your oponent to play with: ~w.~n", [node()]),
+    io:format("Waiting on opponent...~n"),
 
     receive
         {join, Partner_PID} ->
@@ -21,10 +18,10 @@ new_game() ->
 
 play_with(Partner) ->
     io:format("Atempting to join game with ~w~n", [Partner]),
-    case lists:member(Partner, registered()) of 
-        true ->
+    case net_adm:ping(Partner) of 
+        pong ->
             io:format("Partner found!");
-        false ->
+        pangs ->
             io:format("ERROR: Partner not found! Exiting..."),
             halt()
     end,
