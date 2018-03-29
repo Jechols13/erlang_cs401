@@ -1,4 +1,4 @@
--module(test).
+-module(t3).
 -export([
 	newgame/0,
 	playwith/1,
@@ -37,17 +37,21 @@ wait_opponent() ->
 		{connect, PlayerY_PID} ->
 			io:format("Another player joined.~n", []),
 			PlayerY_PID ! {gamestart, self() }, random:seed(now()),
-			R = random:uniform(), %better to have a seed for random number
-			io:format("Random = ~w~n", [R]),
+			%R = random:uniform(), %better to have a seed for random number temporarily disabled for testing
+			R = 0.9,
 			Board = create_empty_board(),
 		
 			case R > 0.5 of
 				true ->
 					%current player starts
-					io:format("You will start first~n", []), Turn = self();
+					io:format("You will start first~n", []),
+					Turn = self(),
+					Msg = io:get_line("Message:"),
+					tell(string:trim(Msg));
 				false ->
 					%the other player starts
-					PlayerY_PID ! {message, "You will start first.~n"}, Turn = PlayerY_PID
+					PlayerY_PID ! {message, "You will start first.~n"},
+					Turn = PlayerY_PID
 			end,
 			wait_msg(x, o, Board, PlayerY_PID, Turn)			
 	end.
@@ -71,11 +75,11 @@ tell(Message) ->
 	
 %starts a new game node and waits for an opponent
 newgame() ->
-	register(player, spawn(test, wait_opponent, [])).
+	register(player, spawn(t3, wait_opponent, [])).
 	
 %connects to another Erlang node identified by Opponent and starts a new game.
 playwith(XNode) ->
-	register(player, spawn(test, connect_opponent, [XNode])).
+	register(player, spawn(t3, connect_opponent, [XNode])).
 	
 stop() ->
 	player!{self(), reqstop},
