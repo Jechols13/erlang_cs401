@@ -4,7 +4,7 @@
 	play_with/1,
 	wait_opponent/0,
 	connect_opponent/1,
-	tell/1,
+	tell/1
 ]).
 
 
