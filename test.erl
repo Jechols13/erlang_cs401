@@ -24,8 +24,8 @@ wait_msg(YourSym, TheirSym, Board, OpponentPID, Turn) ->
 	{message, Msg} ->
 		UpdatedBoard = Board,
 		io:format("Msg: ~p~n", [Msg])
-		end,
-		wait_msg(YourSym, TheirSym, UpdatedBoard, OpponentPID, Turn).
+	end,
+	wait_msg(YourSym, TheirSym, UpdatedBoard, OpponentPID, Turn).
 
 		
 create_empty_board() ->
