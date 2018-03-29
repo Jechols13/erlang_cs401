@@ -23,7 +23,7 @@ wait_msg(YourSym, TheirSym, Board, OpponentPID, Turn) ->
 %A new message has arrived from the opponent
 	{message, Msg} ->
 		UpdatedBoard = Board,
-		io:format("Msg: ~w~n", [Msg])
+		io:format("Msg: ~p~n", [Msg])
 		end,
 		wait_msg(YourSym, TheirSym, UpdatedBoard, OpponentPID, Turn).
 
@@ -49,9 +49,9 @@ wait_opponent() ->
 			io:format("You will start first~n", []), Turn = self();
 		true ->
 						%the other player starts
-			PlayerY_PID ! {message, 'You will start first.~n'}, Turn = PlayerY_PID
+			PlayerY_PID ! {message, "You will start first.~n"}, Turn = PlayerY_PID
 		end,
-			wait_msg(x, o, Board, PlayerY_PID, Turn)
+		wait_msg(x, o, Board, PlayerY_PID, Turn)
 			
 	end.
 		
