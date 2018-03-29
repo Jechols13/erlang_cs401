@@ -94,6 +94,8 @@ msg_center(OponentPID, MySymbol) ->
 			case check_winner(New_Board) of
 				win ->
 					io:format("You win!~n"),
+					draw_board(New_Board),
+					io:format("Game Over.~n"),
 					OponentPID ! {stop, lose, New_Board};
 			   %lose ->  this is not possible, losses are communicated via msg_center
 				tie ->
