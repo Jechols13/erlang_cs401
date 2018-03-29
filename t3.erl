@@ -108,14 +108,14 @@ msg_center(OponentPID, MySymbol) ->
 		%% game is over, opponent says we tied
 		{stop, tie, Board} ->
 			io:format("Tie!~n"),
-			display_board(Board),
+			draw_board(Board),
 			io:format("Game Over.~n");
 		%% -----------------------------------------
 
 		%% game is over, opponent says we lost
 		{stop, lose, Board} ->
 			io:format("You lose!~n"),
-			display_board(Board),
+			draw_board(Board),
 			io:format("Game Over.~n")
 		%% -----------------------------------------
 	end.
