@@ -23,6 +23,7 @@ draw_board(Board) ->
 % move is also communicated to opponent's client
 % coordinate is in form of a1, a2, a3, b1, b2, b3, c1, c2, c3
 % when winning position is reached or no move can be made
+% I changed the parameters and body of this function to be called interactively
 place_token(Board, MySymbol) ->
 	io:format("Board coordinates:~na1 a2 a3~nb1 b2 b3~nc1 c2 c3~n~n"),
 	draw_board(Board),
